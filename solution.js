@@ -1,4 +1,5 @@
 const solution = (zeroes, ones) => {
+while
   let stack = [{
     zeroesCount: zeroes,
     onesCount: ones,

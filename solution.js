@@ -1,14 +1,45 @@
 const solution = (zeroes, ones) => {
-  const count = (lastSymbol, zeroCount, oneCount) => {
-    if (zeroCount === 0) {
-      return oneCount > 0 ? count(1, zeroCount, oneCount - 1) : 1;
+while
+  let stack = [{
+    zeroesCount: zeroes,
+    onesCount: ones,
+    lastSymbol: null,
+  }];
+
+  let counter = 0;
+
+  while (stack.length > 0) {
+    let currentNode = stack.pop();
+    while (currentNode) {
+      if (currentNode.onesCount === 0) {
+        if (currentNode.zeroesCount === 0) {
+          counter += 1;
+          currentNode = null;
+        } else if (currentNode.lastSymbol === 0) {
+          currentNode = null;
+        } else {
+          currentNode = {
+            zeroesCount: currentNode.zeroesCount - 1,
+            onesCount: currentNode.onesCount,
+            lastSymbol: 0,
+          };
+        }
+      } else {
+        if (currentNode.zeroesCount > 0 && currentNode.lastSymbol !== 0) {
+          stack.push({
+            zeroesCount: currentNode.zeroesCount - 1,
+            onesCount: currentNode.onesCount,
+            lastSymbol: 0,
+          });
+        }
+        currentNode = {
+          zeroesCount: currentNode.zeroesCount,
+          onesCount: currentNode.onesCount - 1,
+          lastSymbol: 1,
+        };
+      }
     }
-    if (oneCount === 0) {
-      return lastSymbol === 1 ? count(0, zeroCount - 1, oneCount) : 0;
-    }
-    if (lastSymbol === 0) return count(1, zeroCount, oneCount - 1);
-    return count(1, zeroCount, oneCount - 1) + count(0, zeroCount - 1, oneCount);
-  };
-  return count(null, zeroes, ones);
+  }
+  return counter;
 };
-console.log(solution(2, 3));
+console.log(solution(5, 9000));
